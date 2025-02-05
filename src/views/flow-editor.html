@@ -1,0 +1,44 @@
+<!-- views/flow-editor.html -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editor de Fluxo</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <h1>Editor de Fluxo</h1>
+    <form id="flow-form">
+        <textarea id="flow-json" rows="10" cols="50"></textarea>
+        <button type="submit">Salvar Fluxo</button>
+    </form>
+
+    <script>
+        document.getElementById('flow-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const flowJson = document.getElementById('flow-json').value;
+
+            try {
+                const response = await fetch('/api/update-flow', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: flowJson,
+                });
+
+                if (response.ok) {
+                    alert('Fluxo atualizado com sucesso!');
+                } else {
+                    alert('Erro ao atualizar o fluxo.');
+                }
+            } catch (error) {
+                console.error(error);
+                alert('Erro ao enviar os dados.');
+            }
+        });
+    </script>
+</body>
+
+</html>

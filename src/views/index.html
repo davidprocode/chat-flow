@@ -1,0 +1,52 @@
+<!-- views/index.html -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WhatsApp Chatbot Dashboard</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <h1>WhatsApp Chatbot Dashboard</h1>
+
+    <div>
+        <h2>Histórico de Conversas</h2>
+        <ul id="chat-history"></ul>
+    </div>
+
+    <div>
+        <h2>Lista de Contatos</h2>
+        <ul id="contacts-list"></ul>
+    </div>
+
+    <button onclick="window.location.href='/flow-editor.html'">Editar Fluxo</button>
+
+    <script>
+        fetch('/api/chat-history')
+            .then(response => response.json())
+            .then(data => {
+                const chatHistoryList = document.getElementById('chat-history');
+                for (const [phoneNumber, messages] of Object.entries(data)) {
+                    const listItem = document.createElement('li');
+                    listItem.textContent = `${phoneNumber}: ${messages.join(' | ')}`;
+                    chatHistoryList.appendChild(listItem);
+                }
+            });
+
+        fetch('/api/contacts')
+            .then(response => response.json())
+            .then(data => {
+                const contactsList = document.getElementById('contacts-list');
+                data.forEach(contact => {
+                    const listItem = document.createElement('li');
+                    listItem.textContent = `${contact.name} (${contact.id})`;
+                    contactsList.appendChild(listItem);
+                });
+            });
+    </script>
+</body>
+
+</html>
