@@ -1,6 +1,4 @@
-// src/index.ts
-
-import ChatFlow from "./ChatFlow";
+import ChatFlow from "./Chatflow";
 
 const chat = new ChatFlow();
 
@@ -15,4 +13,4 @@ function simulateChat(userInputs: string[]) {
 }
 
 // Exemplo de interação
-simulateChat(["1", "1", "back"]);
+simulateChat(["1", "4"]);

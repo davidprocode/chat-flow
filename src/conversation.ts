@@ -1,36 +1,46 @@
 // src/conversation.ts
+const display = {
+  greet: `Olá.  Eu sou o Bourbozinho, O assistente virtual do instututo Bourbon de Educação!`,
+  menu: `Escolha uma opção:\n1. Informações sobre cursos\n2. Pagamentos\n3. Marcar reposões\n0. Sair`,
+  options: {
+    "1": "cursos_info",
+    "2": "pagar_agora",
+    "3": "reposicao_marcar",
+    "0": "sair",
+  },
+  horarios: `1 - Manhã\n2 - Tarde\n`,
+  cursos_tipo: `1 - Cursos Profissionalizantes\n2 - Cursos Técnicos\n3 - Faculdade Cruzeiro do Sul\n4 - Supletivo",`,
+};
 
 const conversationFlow = {
   start: {
+    message: `${display.greet}\n${display.menu}`,
+    options: display.options,
+  },
+  //Fluxo para Informações sobre cursos
+  cursos_info: {
     message:
-      "Olá.  Eu sou o Bourbozinho, O assistente virtual do instututo Bourbon de Educação!\nEscolha uma opção:\n1. Informações sobre cursos\n2. Pague agora\n3. Marcar reposões\n0. Sair",
+      "Você selecionou Informações sobre cursos.\n" + display.cursos_tipo,
     options: {
-      "1": "cursos",
-      "2": "reposição",
-      "3": "pagametos",
       "0": "sair",
     },
-  },
-  cursos: {
-    message:
-      "You selected cursos. Escolha uma opção:\n1. Informações sobre cursos\n2. Pague agora\n3. Marcar reposões\n0. Sair",
-    options: {
-      "1": "cursos",
-      "2": "reposição",
-      "3": "pagametos",
-      "0": "sair",
+    customHandler: (input: string): string | null => {
+      if (input.toLowerCase() === "1") {
+        return "1 - Cursos Profissionalizantes";
+      }
+      if (input.toLowerCase() === "2") {
+        return "2 - Cursos Técnicos";
+      }
+      if (input.toLowerCase() === "3") {
+        return "3 - Faculdade Cruzeiro do Sul";
+      }
+      if (input.toLowerCase() === "4") {
+        return "4 - Supletivo";
+      }
+      return null;
     },
   },
-  reposição: {
-    message:
-      "You selected reposição. Escolha uma opção:\n1. Informações sobre cursos\n2. Pague agora\n3. Marcar reposões\n0. Sair",
-    options: {
-      "1": "cursos",
-      "2": "reposição",
-      "3": "pagametos",
-      "0": "sair",
-    },
-  },
+
   pagametos: {
     message:
       "You reported a pagametos. Please describe the problem or type 'back' to return.",
@@ -38,40 +48,30 @@ const conversationFlow = {
       back: "support",
     },
     customHandler: (input: string): string | null => {
-      if (!["back"].includes(input.toLowerCase())) {
+      if (input.toLowerCase() === "0") {
         return "Thank you for your input. We will get back to you shortly.";
       }
       return null;
     },
   },
-  billing_inquiry: {
-    message:
-      "You selected Billing Inquiry. Please provide your invoice number or type 'back' to return.",
+  //Fluxo para marcar reposições
+  reposicao_marcar: {
+    message: `Qual Horario?\n` + display.horarios,
     options: {
-      back: "support",
+      "0": "sair",
     },
     customHandler: (input: string): string | null => {
-      if (!["back"].includes(input.toLowerCase())) {
-        return "Your inquiry has been noted. We will contact you soon.";
+      if (input.toLowerCase() === "1") {
+        return "Manhã";
+      }
+      if (input.toLowerCase() === "2") {
+        return "Tarde";
       }
       return null;
     },
   },
-  product_info: {
-    message:
-      "You requested Product Information. Here are the details: [Product Details]. Type 'back' to return.",
-    options: {
-      back: "sales",
-    },
-  },
-  pricing: {
-    message:
-      "You asked about Pricing. Here is the pricing information: [Pricing Details]. Type 'back' to return.",
-    options: {
-      back: "sales",
-    },
-  },
-  exit: {
+
+  sair: {
     message: "Thank you for visiting! Have a great day!",
     options: {},
   },
